@@ -11,12 +11,43 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 import os
 from flask import request
+from twilio.rest import Client
 
 app = Flask(__name__)
 
 @app.route("/")
 def hello():
     return "Hello, World!"
+
+
+@app.route("/sms")
+def enviarSms():
+    hashString = request.args.get("hash")
+    if(hashString == os.environ.get('SECURITY_HASH')):
+        destino = request.args.get("destino")
+        mensaje = request.args.get("mensaje")
+        
+        try:
+            account_sid = os.environ["TWILIO_ACCOUNT_SID"]
+            auth_token = os.environ["TWILIO_AUTH_TOKEN"]
+            client = Client(account_sid, auth_token)
+            
+            message = client.messages \
+                            .create(
+                                 body=mensaje,
+                                 from_="+16673078141",
+                                 to="+" + destino
+                             )
+            
+            print(message.sid)
+            print("Enviado")
+            return "OK"
+        except Exception as e:
+            print(e.message)
+            return "KO";
+    else:
+        print("Sin hash")
+        return "hash error"
 
 
 @app.route("/email")

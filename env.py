@@ -7,5 +7,7 @@ Created on Mon Oct  4 11:31:36 2021
 
 import os
 
-os.environ["SENDGRID_API_KEY"]="Aquí va la API KEY de SEND GRID"
+os.environ["SENDGRID_API_KEY"]="API key de sendgrid"
 os.environ["SECURITY_HASH"]="admin123"
+os.environ["TWILIO_ACCOUNT_SID"]="Twilio Account SID"
+os.environ["TWILIO_AUTH_TOKEN"]="Twilio Token"
